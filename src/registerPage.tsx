@@ -4,13 +4,17 @@ import {login, User, register} from './service/api';
 import {Link} from "react-router-dom";
 import {Field, Formik, ErrorMessage, Form} from "formik";
 
+
 export const RegisterPage = () => {
     const [error, setError] = useState('')
 
 
     const handleRegister = async (values: { email: string; password: string; passwordConfirm: string }) => {
-        if (password !== passwordConfirm) {
+
+
+        if (values.password !== values.passwordConfirm) {
             setError('Passwörter stimmen nicht überein');
+            console.log('ddddddddddddddddd')
             return;
         }
 
@@ -20,6 +24,7 @@ export const RegisterPage = () => {
 
         } catch {
             setError('Registrierung fehlgeschlagen');
+            console.log('Registrierung fehlgeschlagen');
         }
     }
 
@@ -36,8 +41,9 @@ export const RegisterPage = () => {
                         </div>
                         <Form className="login-form">
                             <div className="email">
-                                <label htmlFor="email">E-Mail-Adresse</label>
+                                <label>E-Mail-Adresse</label>
                                 <Field
+                                    htmlFor="email"
                                     type="email"
                                     id="email"
                                     placeholder="deine@email.com"
@@ -66,6 +72,7 @@ export const RegisterPage = () => {
                                 />
 
                             </div>
+
 
                             {error && <p className="error-message">{error}</p>}
 

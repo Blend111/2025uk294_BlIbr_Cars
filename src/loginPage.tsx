@@ -8,13 +8,16 @@ export const LoginPage = () => {
     const [error, setError] = useState('')
 
 
-    const handleLogin = async (values: {email, password}: any) =>{
-        const result = await login(values.email, values.password);
-
-        localStorage.setItem('token', result.accessToken || '');
-        console.log('Login erfolgreich:');
-        result;
-    }
+    const handleLogin = async (values: { email: string; password: string }) => {
+        try {
+            const result = await login(values.email, values.password);
+            localStorage.setItem('token', result.accessToken || '');
+            console.log('Login erfolgreich');
+        } catch (err) {
+            setError('Login fehlgeschlagen. Bitte überprüfe deine Daten.');
+            console.log('Login fehlgeschlagen');
+        }
+    };
 
 
 
@@ -46,6 +49,9 @@ export const LoginPage = () => {
                                    placeholder="Dein Passwort"
                                    name="password" required/>
                         </div>
+
+                        {error && <p className="error-message">{error}</p>}
+
                     </Form>
                     <button className="login-btn">Anmelden</button>
 
