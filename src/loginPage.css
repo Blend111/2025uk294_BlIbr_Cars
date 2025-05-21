@@ -1,7 +1,7 @@
 .container {
     display: flex;
-    width: 800px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     overflow: hidden;
@@ -28,8 +28,7 @@
 }
 
 .login-form{
-    margin-bottom: 20px;
-    width: 770px;
+
 }
 
 .login-form label {
@@ -41,19 +40,20 @@
     font-weight: 500;
 }
 .email{
-    width: 100%;
+
 }
+
 .password{
     width: 100%;
 }
 
 .login-form input {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding-bottom: 14px;
+    padding-top: 14px;
+    padding-left: 1px;
     font-size: 14px;
-    transition: border-color 0.3s;
+    border-radius: 10px;
 }
 
 .login-btn {
@@ -67,6 +67,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.3s;
+    margin-top: 20px;
 }
 
 .login-btn:hover {

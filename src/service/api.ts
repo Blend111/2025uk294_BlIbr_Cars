@@ -7,10 +7,41 @@ export const api: AxiosInstance = axios.create({
     }
 });
 
-interface Cars {
-    id: string;
-    name: string;
-    year: number;
+
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    (response) => response, (error) => {
+        if(error.response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error)
+    }
+)
+
+export interface Car {
+    id?: string;
+    Name: string;
+    Year: string;
+    Miles_per_Gallon?: number | null;
+    Cylinders?: number | null;
+    Displacement?: number | null;
+    Horsepower?: number | null;
+    Weight_in_lbs?: number | null;
+    Acceleration?: number | null;
+    Origin?: string;
 }
 
 export interface User {
@@ -42,26 +73,26 @@ export const register = async (email:string, password:string): Promise<User> => 
 }
 
 // GET all cars
-export const getCars = async (): Promise<Cars[]> => {
-    const response = await api.get<Cars[]>('/cars');
+export const getCars = async (): Promise<Car[]> => {
+    const response = await api.get<Car[]>('/cars');
     return response.data;
 }
 
 // GET single car
-export const getCar = async (id: string): Promise<Cars> => {
-    const response = await api.get<Cars>(`/cars/${id}`);
+export const getCar = async (id: string): Promise<Car> => {
+    const response = await api.get<Car>(`/cars/${id}`);
     return response.data;
 }
 
 // POST new car
-export const createCar = async (car: Cars): Promise<Cars> => {
-    const response = await api.post<Cars>('/cars', car);
+export const createCar = async (car: Car): Promise<Car> => {
+    const response = await api.post<Car>('/cars', car);
     return response.data;
 }
 
 // PUT update car
-export const updateCar = async (id: string, car: Cars): Promise<Cars> => {
-    const response = await api.put<Cars>(`/cars/${id}`, car);
+export const updateCar = async (id: string, car: Car): Promise<Car> => {
+    const response = await api.put<Car>(`/cars/${id}`, car);
     return response.data;
 }
 

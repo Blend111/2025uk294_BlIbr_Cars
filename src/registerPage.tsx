@@ -75,9 +75,10 @@ export const RegisterPage = () => {
 
 
                             {error && <p className="error-message">{error}</p>}
+                            <button type="submit" className="login-btn">Registrieren</button>
 
                         </Form>
-                        <button type="submit" className="login-btn">Registrieren</button>
+
 
                         <div className="register">
                             <p>Schon ein Konto? <Link to="/login">Jetzt anmelden</Link></p>
