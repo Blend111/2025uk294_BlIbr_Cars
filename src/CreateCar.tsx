@@ -160,7 +160,7 @@ export const CreateCar = () => {
                             {formikSubmitting ? 'Wird gespeichert...' : 'Auto speichern'}
                         </button>
 
-                        <button className="btnn" onClick={() => {navigate("/")}}>Abbrechen</button>
+                        <button className="btnn" type="button" onClick={() => {navigate("/")}}>Abbrechen</button>
                     </Form>
                 )}
             </Formik>

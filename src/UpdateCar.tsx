@@ -46,7 +46,7 @@ export const UpdateCar = () => {
         <div className="create-car-container">
             <h2>Auto bearbeiten</h2>
 
-            <Formik initialValues={car} onSubmit={handleSubmit}>
+            <Formik initialValues={car}  onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
                     <Form>
                         <div className="form-group">
@@ -132,10 +132,12 @@ export const UpdateCar = () => {
                         <button type="submit" className="submit-btn" disabled={isSubmitting}>
                             {isSubmitting ? 'Wird gespeichert...' : 'Änderungen speichern'}
                         </button>
-                        <button className="btnn" onClick={() => {navigate("/")}}>Abbrechen</button>
+                        <button className="btnn" type="button" onClick={() => {navigate("/")}}>Abbrechen</button>
                     </Form>
+
                 )}
             </Formik>
+
         </div>
     );
 };
