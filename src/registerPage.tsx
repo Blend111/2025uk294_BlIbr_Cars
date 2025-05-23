@@ -4,24 +4,20 @@ import {login, User, register} from './service/api';
 import {Link} from "react-router-dom";
 import {Field, Formik, ErrorMessage, Form} from "formik";
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+
 
 
 export const RegisterPage = () => {
     const [error, setError] = useState('')
-
+    const navigate = useNavigate();
 
     const handleRegister = async (values: { email: string; password: string; passwordConfirm: string }) => {
-
-
-        if (values.password !== values.passwordConfirm) {
-            setError('Passwörter stimmen nicht überein');
-            console.log('ddddddddddddddddd')
-            return;
-        }
 
         try {
             const result: User = await register(values.email, values.password);
             console.log('Registrierung erfolgreich:', result);
+            navigate('/login');
 
         } catch {
             setError('Registrierung fehlgeschlagen');
@@ -35,11 +31,8 @@ export const RegisterPage = () => {
             .email('Ungültige E-Mail-Adresse')
             .required('E-Mail ist erforderlich'),
         password: Yup.string()
-            .min(8, 'Passwort muss mindestens 8 Zeichen haben')
-            .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                'Passwort muss Groß-, Kleinbuchstaben und eine Zahl enthalten'
-            )
+            .min(6, 'Passwort muss mindestens 6 Zeichen haben')
+
             .required('Passwort ist erforderlich'),
         passwordConfirm: Yup.string()
             .oneOf([Yup.ref('password')], 'Passwörter müssen übereinstimmen')
@@ -62,15 +55,16 @@ export const RegisterPage = () => {
                         </div>
                         <Form className="login-form">
                             <div className="email">
-                                <label>E-Mail-Adresse</label>
+                                <label htmlFor="email">E-Mail-Adresse</label>
                                 <Field
-                                    htmlFor="email"
+
                                     type="email"
                                     id="email"
                                     placeholder="deine@email.com"
                                     name="email"
                                     required
                                 />
+                                <ErrorMessage name="email" component="div" className="error-message" />
 
                             </div>
                             <div className="password">
@@ -82,16 +76,18 @@ export const RegisterPage = () => {
                                     placeholder="Dein Passwort"
                                     required
                                 />
+                                <ErrorMessage name="password" component="div" className="error-message" />
                             </div>
+
                             <div className="password">
-                                <label htmlFor="password">Passwort wiederholen</label>
+                                <label htmlFor="passwordConfirm">Passwort wiederholen</label>
                                 <Field
                                     type="password"
                                     id="passwordConfirm"
                                     name="passwordConfirm"
                                     placeholder="Dein Passwort"
                                 />
-
+                                <ErrorMessage name="passwordConfirm" component="div" className="error-message" />
                             </div>
 
 
