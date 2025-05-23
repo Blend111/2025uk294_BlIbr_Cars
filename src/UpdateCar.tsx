@@ -1,80 +1,62 @@
-import { useState } from 'react';
-import { createCar, Car } from './service/api';
-import './CreateCar.css';
-import {Field, Form, Formik} from "formik";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getCar, updateCar, Car } from './service/api';
+import './UpdateCar.css';
+import { Field, Form, Formik } from 'formik';
 
-
-
-export const CreateCar = () => {
+export const UpdateCar = () => {
+    const { id } = useParams();
+    const [car, setCar] = useState<Car | null>(null);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const loadCar = async () => {
+            try {
+                if (id) {
+                    const data = await getCar(id);
+                    setCar(data);
+                }
+            } catch (err) {
+                setError('Fehler beim Laden des Autos.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadCar();
+    }, [id]);
+
     const handleSubmit = async (values: Car) => {
-
-
         try {
-            const carData={
-                ...values,
-            };
+            if (!id) return;
 
-            await createCar(carData);
-            navigate("/")
-
+            await updateCar(id, values);
+            navigate('/'); // zurück zur Homepage
         } catch (err) {
-            setError('Fehler beim Erstellen des Autos.');
-            console.error('Fehler beim Erstellen des Autos:', err);
+            setError('Fehler beim Aktualisieren des Autos.');
         }
-
-
     };
 
+    if (loading) return <div>Lade Fahrzeugdaten...</div>;
+    if (!car) return <div>Auto nicht gefunden</div>;
 
     return (
         <div className="create-car-container">
-            <h1>Neues Auto hinzufügen</h1>
+            <h2>Auto bearbeiten</h2>
 
-            <Formik
-                initialValues={{
-                    id: '',
-                    Name: '',
-                    Year: '',
-                    Miles_per_Gallon: null,
-                    Cylinders: null,
-                    Displacement: null,
-                    Horsepower: null,
-                    Weight_in_lbs: null,
-                    Acceleration: null,
-                    Origin: ''
-                }}
-
-                onSubmit={handleSubmit}
-            >
-                {({ isSubmitting: formikSubmitting }) => (
-
-
+            <Formik initialValues={car} onSubmit={handleSubmit}>
+                {({ isSubmitting }) => (
                     <Form>
-
-
                         <div className="form-group">
                             <label htmlFor="Name">Name</label>
-                            <Field
-                                type="text"
-                                id="Name"
-                                name="Name"
-                                placeholder="z.B. BMW M3"/>
+                            <Field type="text" id="Name" name="Name" />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="Year">Baujahr</label>
-                            <Field
-                                type="date"
-                                id="Year"
-                                name="Year"
-                                min="1900"
-                                max={new Date().getFullYear()}
-                                required
-                            />
+                            <Field type="date" id="Year" name="Year" />
                         </div>
 
                         <div className="form-group">
@@ -142,31 +124,18 @@ export const CreateCar = () => {
 
                         <div className="form-group">
                             <label htmlFor="Origin">Herkunft</label>
-                            <Field
-                                type="text"
-                                id="Origin"
-                                name="Origin"
-                                placeholder="z.B. Deutschland"
-                            />
+                            <Field type="text" id="Origin" name="Origin" />
                         </div>
 
                         {error && <div className="error-message">{error}</div>}
 
-                        <button
-                            type="submit"
-                            className="submit-btn"
-                            disabled={formikSubmitting}
-                        >
-                            {formikSubmitting ? 'Wird gespeichert...' : 'Auto speichern'}
+                        <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                            {isSubmitting ? 'Wird gespeichert...' : 'Änderungen speichern'}
                         </button>
-
                         <button className="btnn" onClick={() => {navigate("/")}}>Abbrechen</button>
                     </Form>
                 )}
             </Formik>
-
         </div>
-
     );
-
-    };
+};

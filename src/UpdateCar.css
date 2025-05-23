@@ -1,12 +1,12 @@
 /* CreateCar.css */
 .create-car-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     background-color: white;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    width: 1000px;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
 }
 
 .cars-header {
@@ -15,7 +15,6 @@
     align-items: center;
     margin-bottom: 20px;
 }
-
 
 .add-car-btn {
     background-color: #6c63ff;
@@ -26,7 +25,6 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
-
 }
 
 .add-car-btn:hover {
@@ -46,9 +44,16 @@
     margin-top: 15px;
 }
 
-
+.create-car-container h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
 .form-group {
+    margin-bottom: 20px;
 }
 
 .form-group label {
@@ -59,7 +64,19 @@
     font-weight: 500;
 }
 
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
 
+.form-group input:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
 
 .error-text {
     color: #ff4757;
