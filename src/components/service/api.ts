@@ -32,16 +32,16 @@ api.interceptors.response.use(
 )
 
 export interface Car {
-    id?: string;
+    id: string;
     Name: string;
     Year: string;
-    Miles_per_Gallon?: number | null;
-    Cylinders?: number | null;
-    Displacement?: number | null;
-    Horsepower?: number | null;
-    Weight_in_lbs?: number | null;
-    Acceleration?: number | null;
-    Origin?: string;
+    Miles_per_Gallon: number | null;
+    Cylinders: number | null;
+    Displacement: number | null;
+    Horsepower: number | null;
+    Weight_in_lbs: number | null;
+    Acceleration: number | null;
+    Origin: string | null;
 }
 
 export interface User {

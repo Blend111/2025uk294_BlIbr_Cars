@@ -1,54 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getCar, updateCar, Car } from './service/api';
-import './UpdateCar.css';
-import {ErrorMessage, Field, Form, Formik} from 'formik';
+import { useState } from 'react';
+import { createCar, Car } from '../service/api';
+import './CreateCar.css';
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import {useNavigate} from "react-router-dom";
 import * as Yup from 'yup';
 
-export const UpdateCar = () => {
-    const { id } = useParams();
-    const [car, setCar] = useState<Car>({
-        id: "1",
-        Name: "a",
-        Year: "1",
-        Miles_per_Gallon: 1,
-        Cylinders: 1,
-        Displacement: 2,
-        Horsepower:2,
-        Weight_in_lbs:2,
-        Acceleration: 2,
-        Origin: "0"
-    });
+
+
+export const CreateCar = () => {
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadCar = async () => {
-            try {
-                if (id) {
-                    const data = await getCar(id);
-                    setCar(data);
-                }
-            } catch (err) {
-                setError('Fehler beim Laden des Autos.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadCar();
-    }, [id]);
-
     const handleSubmit = async (values: Car) => {
-        try {
-            if (!id) return;
 
-            await updateCar(id, values);
-            navigate('/'); // zurück zur Homepage
+
+        try {
+            const carData={
+                ...values,
+            };
+
+            await createCar(carData);
+            navigate("/")
+
         } catch (err) {
-            setError('Fehler beim Aktualisieren des Autos.');
+            setError('Fehler beim Erstellen des Autos.');
+            console.error('Fehler beim Erstellen des Autos:', err);
         }
+
+
     };
 
     const carSchema = Yup.object({
@@ -86,27 +65,54 @@ export const UpdateCar = () => {
     });
 
 
-    if (loading) return <div>Lade Fahrzeugdaten...</div>;
 
     return (
         <div className="create-car-container">
-            <h2>Auto bearbeiten</h2>
+            <h1>Neues Auto hinzufügen</h1>
 
-            <Formik initialValues={car}
-                    onSubmit={handleSubmit}
-            validationSchema={carSchema}
+            <Formik
+                initialValues={{
+                    id: '',
+                    Name: '',
+                    Year: '',
+                    Miles_per_Gallon: null,
+                    Cylinders: null,
+                    Displacement:null,
+                    Horsepower: null,
+                    Weight_in_lbs: null,
+                    Acceleration: null,
+                    Origin: ''
+                }}
+
+                onSubmit={handleSubmit}
+                validationSchema={carSchema}
             >
-                {({ isSubmitting }) => (
+                {({ isSubmitting: formikSubmitting }) => (
+
+
                     <Form>
+
+
                         <div className="form-group">
                             <label htmlFor="Name">Name</label>
-                            <Field type="text" id="Name" name="Name" />
+                            <Field
+                                type="text"
+                                id="Name"
+                                name="Name"
+                                placeholder="z.B. BMW M3"/>
                             <ErrorMessage name="Name" component="div" className="error-message" />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="Year">Baujahr</label>
-                            <Field type="date" id="Year" name="Year" />
+                            <Field
+                                type="date"
+                                id="Year"
+                                name="Year"
+                                min="1900"
+                                max={new Date().getFullYear()}
+                                required
+                            />
                             <ErrorMessage name="Year" component="div" className="error-message" />
                         </div>
 
@@ -181,21 +187,32 @@ export const UpdateCar = () => {
 
                         <div className="form-group">
                             <label htmlFor="Origin">Herkunft</label>
-                            <Field type="text" id="Origin" name="Origin" />
+                            <Field
+                                type="text"
+                                id="Origin"
+                                name="Origin"
+                                placeholder="z.B. Deutschland"
+                            />
                             <ErrorMessage name="Origin" component="div" className="error-message" />
                         </div>
 
                         {error && <div className="error-message">{error}</div>}
 
-                        <button type="submit" className="submit-btn" disabled={isSubmitting}>
-                            {isSubmitting ? 'Wird gespeichert...' : 'Änderungen speichern'}
+                        <button
+                            type="submit"
+                            className="submit-btn"
+                            disabled={formikSubmitting}
+                        >
+                            {formikSubmitting ? 'Wird gespeichert...' : 'Auto speichern'}
                         </button>
+
                         <button className="btnn" type="button" onClick={() => {navigate("/")}}>Abbrechen</button>
                     </Form>
-
                 )}
             </Formik>
 
         </div>
+
     );
-};
+
+    };

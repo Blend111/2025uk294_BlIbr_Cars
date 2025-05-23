@@ -1,6 +1,6 @@
 import './loginPage.css'
 import {useState} from "react";
-import {login} from './service/api';
+import {login} from '../service/api';
 import {Link, useNavigate} from 'react-router-dom';
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from 'yup';
@@ -33,7 +33,6 @@ export const LoginPage = () => {
     });
 
 
-
     return (
         <Formik
             initialValues={{email: '', password: ''}}
@@ -56,7 +55,7 @@ export const LoginPage = () => {
                                    placeholder="deine@email.com"
                                    name="email"
                                    required/>
-                            <ErrorMessage name="email" component="div" className="error-message" />
+                            <ErrorMessage name="email" component="div" className="error-message"/>
                         </div>
 
                         <div className="password">
@@ -65,11 +64,13 @@ export const LoginPage = () => {
                                    id="password"
                                    placeholder="Dein Passwort"
                                    name="password" required/>
-                            <ErrorMessage name="password" component="div" className="error-message" />
+                            <ErrorMessage name="password" component="div" className="error-message"/>
                         </div>
 
                         {error && <p className="error-message">{error}</p>}
-                        <div> <button className="login-btn" type={"submit"}>Anmelden</button> </div>
+                        <div>
+                            <button className="login-btn" type={"submit"}>Anmelden</button>
+                        </div>
                     </Form>
 
 

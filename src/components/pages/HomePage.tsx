@@ -1,7 +1,7 @@
 // src/service/HomePage.tsx
 import { useEffect, useState } from 'react';
-import { AuthService } from './service/AuthService';
-import { getCars, deleteCar, updateCar, createCar, Car} from './service/api';
+import { AuthService } from '../service/AuthService';
+import { getCars, deleteCar, updateCar, createCar, Car} from '../service/api';
 import {Link, useNavigate} from 'react-router-dom';
 import './HomePage.css'
 

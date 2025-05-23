@@ -1,6 +1,6 @@
 import './registerPage.css'
 import {useState} from "react";
-import {login, User, register} from './service/api';
+import {login, User, register} from '../service/api';
 import {Link} from "react-router-dom";
 import {Field, Formik, ErrorMessage, Form} from "formik";
 import * as Yup from 'yup';
