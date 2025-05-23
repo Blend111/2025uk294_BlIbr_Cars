@@ -3,6 +3,7 @@ import {useState} from "react";
 import {login, User, register} from './service/api';
 import {Link} from "react-router-dom";
 import {Field, Formik, ErrorMessage, Form} from "formik";
+import * as Yup from 'yup';
 
 
 export const RegisterPage = () => {
@@ -28,10 +29,30 @@ export const RegisterPage = () => {
         }
     }
 
+
+    const registerSchema = Yup.object({
+        email: Yup.string()
+            .email('Ungültige E-Mail-Adresse')
+            .required('E-Mail ist erforderlich'),
+        password: Yup.string()
+            .min(8, 'Passwort muss mindestens 8 Zeichen haben')
+            .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                'Passwort muss Groß-, Kleinbuchstaben und eine Zahl enthalten'
+            )
+            .required('Passwort ist erforderlich'),
+        passwordConfirm: Yup.string()
+            .oneOf([Yup.ref('password')], 'Passwörter müssen übereinstimmen')
+            .required('Passwort bestätigen ist erforderlich'),
+    });
+
         return (
             <Formik
                 initialValues={{email: '', password: '', passwordConfirm: ''}}
-                onSubmit={handleRegister}>
+                onSubmit={handleRegister}
+                validationSchema={registerSchema}
+            >
+
                 {() => (
 
                     <div className="container">

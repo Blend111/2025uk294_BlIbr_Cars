@@ -8,11 +8,6 @@ export const AuthService = {
         return localStorage.getItem('token');
     },
 
-    // Prüfen ob der Benutzer eingeloggt ist
-    isAuthenticated: (): boolean => {
-        return !!localStorage.getItem('token');
-    },
-
     // Token zu allen API-Anfragen hinzufügen
     setupAuthInterceptor: (): void => {
         api.interceptors.request.use(

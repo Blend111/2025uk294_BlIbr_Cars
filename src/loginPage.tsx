@@ -2,7 +2,8 @@ import './loginPage.css'
 import {useState} from "react";
 import {login} from './service/api';
 import {Link, useNavigate} from 'react-router-dom';
-import {Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from 'yup';
 
 export const LoginPage = () => {
     const [error, setError] = useState('')
@@ -22,12 +23,22 @@ export const LoginPage = () => {
         }
     };
 
+    const loginSchema = Yup.object({
+        email: Yup.string()
+            .email('Ungültige E-Mail-Adresse')
+            .required('E-Mail ist erforderlich'),
+        password: Yup.string()
+            .min(6, 'Passwort muss mindestens 6 Zeichen haben')
+            .required('Passwort ist erforderlich'),
+    });
+
 
 
     return (
         <Formik
             initialValues={{email: '', password: ''}}
             onSubmit={handleLogin}
+            validationSchema={loginSchema}
         >
             {() => (
 
@@ -45,6 +56,7 @@ export const LoginPage = () => {
                                    placeholder="deine@email.com"
                                    name="email"
                                    required/>
+                            <ErrorMessage name="email" component="div" className="error-message" />
                         </div>
 
                         <div className="password">
@@ -53,6 +65,7 @@ export const LoginPage = () => {
                                    id="password"
                                    placeholder="Dein Passwort"
                                    name="password" required/>
+                            <ErrorMessage name="password" component="div" className="error-message" />
                         </div>
 
                         {error && <p className="error-message">{error}</p>}
